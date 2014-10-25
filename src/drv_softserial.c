@@ -160,12 +160,10 @@ void initialiseSoftSerial(softSerial_t *softSerial, uint8_t portIndex, uint32_t 
 }
 
 typedef struct softSerialConfiguration_s {
-    uint32_t sharedBaudRate;
     bool primaryPortInitialised;
 } softSerialConfiguration_t;
 
 softSerialConfiguration_t softSerialConfiguration = {
-    0,
     false
 };
 
@@ -179,11 +177,10 @@ void setupSoftSerialPrimary(uint32_t baud, uint8_t inverted)
 
     initialiseSoftSerial(softSerial, portIndex, baud, inverted);
 
-    softSerialConfiguration.sharedBaudRate = baud;
     softSerialConfiguration.primaryPortInitialised = true;
 }
 
-void setupSoftSerialSecondary(uint8_t inverted)
+void setupSoftSerialSecondary(uint32_t baud, uint8_t inverted)
 {
     int portIndex = 1;
     softSerial_t *softSerial = &(softSerialPorts[portIndex]);
@@ -191,7 +188,7 @@ void setupSoftSerialSecondary(uint8_t inverted)
     softSerial->rxTimerHardware = &(timerHardware[SOFT_SERIAL_2_TIMER_RX_HARDWARE]);
     softSerial->txTimerHardware = &(timerHardware[SOFT_SERIAL_2_TIMER_TX_HARDWARE]);
 
-    initialiseSoftSerial(softSerial, portIndex, softSerialConfiguration.sharedBaudRate, inverted);
+    initialiseSoftSerial(softSerial, portIndex, baud, inverted);
 }
 
 

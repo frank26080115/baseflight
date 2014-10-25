@@ -41,7 +41,7 @@ extern softSerial_t softSerialPorts[];
 extern const struct serialPortVTable softSerialVTable[];
 
 void setupSoftSerialPrimary(uint32_t baud, uint8_t inverted);
-void setupSoftSerialSecondary(uint8_t inverted);
+void setupSoftSerialSecondary(uint32_t baud, uint8_t inverted);
 
 // serialPort API
 void softSerialWriteByte(serialPort_t *instance, uint8_t ch);

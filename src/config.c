@@ -244,8 +244,9 @@ static void resetConf(void)
     mcfg.gps_baudrate = GPS_BAUD_115200;
     // serial (USART1) baudrate
     mcfg.serial_baudrate = 115200;
-    mcfg.softserial_baudrate = 9600;
+    mcfg.softserial_1_baudrate = 9600;
     mcfg.softserial_1_inverted = 0;
+    mcfg.softserial_2_baudrate = 9600;
     mcfg.softserial_2_inverted = 0;
     mcfg.looptime = 3500;
     mcfg.emf_avoidance = 0;

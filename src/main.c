@@ -208,8 +208,8 @@ int main(void)
     if (feature(FEATURE_SOFTSERIAL)) {
         //mcfg.softserial_baudrate = 19200; // Uncomment to override config value
 
-        setupSoftSerialPrimary(mcfg.softserial_baudrate, mcfg.softserial_1_inverted);
-        setupSoftSerialSecondary(mcfg.softserial_2_inverted);
+        setupSoftSerialPrimary(mcfg.softserial_1_baudrate, mcfg.softserial_1_inverted);
+        setupSoftSerialSecondary(mcfg.softserial_2_baudrate, mcfg.softserial_2_inverted);
 
 #ifdef SOFTSERIAL_LOOPBACK
         loopbackPort1 = (serialPort_t*)&(softSerialPorts[0]);
