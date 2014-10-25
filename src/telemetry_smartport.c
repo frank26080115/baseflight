@@ -1,5 +1,6 @@
 /*
  * SmartPort Telemetry implementation by frank26080115
+ * see https://github.com/frank26080115/baseflight/wiki/Using-Smart-Port
  */
 #include "board.h"
 #include "mw.h"
@@ -20,6 +21,7 @@ enum
     // reverse engineering tells me that there are plenty more IDs
 };
 
+// these data identifiers are obtained from http://diydrones.com/forum/topics/amp-to-frsky-x8r-sport-converter
 enum
 {
     FSSP_DATAID_SPEED      = 0x0830 ,
@@ -94,6 +96,8 @@ static void smartPortDataReceive(uint16_t c)
             (c == FSSP_SENSOR_ID3) ||
             (c == FSSP_SENSOR_ID4)) {
             smartPortHasRequest = 1;
+            // we only responde to these IDs
+            // the X4R-SB does send other IDs, we ignore them, but take note of the time
         }
     }
     lastChar = c;
@@ -150,6 +154,7 @@ void configureSmartPortTelemetryPort(void)
         core.telemport = uartOpen(USART2, smartPortDataReceive, SMARTPORT_BAUD, MODE_BIDIR);
     }
     else if (mcfg.telemetry_port == TELEMETRY_PORT_UART_3) {
+        // UART3 is actually I2C on Naze32 but we leave this code here for other hardware
         core.telemport = uartOpen(USART3, NULL, SMARTPORT_BAUD, MODE_BIDIR);
     }
     smartPortIsActive = 1;
@@ -176,18 +181,20 @@ void handleSmartPortTelemetry(void)
 
     uint32_t now = millis();
 
+    // if timed out, reconfigure the UART back to normal so the GUI or CLI works
     if ((now - smartPortLastRequestTime) > SMARTPORT_NOT_CONNECTED_TIMEOUT_MS) {
         smartPortHasTimedOut = 1;
         return;
     }
 
-    // limit the rate at which we send responses
+    // limit the rate at which we send responses, we don't want to affect flight characteristics (but USART1 is using DMA so I doubt it matters)
     if ((now - smartPortLastServiceTime) < SMARTPORT_SERVICE_DELAY_MS)
         return;
 
     if (smartPortHasRequest) {
+        // we can send back any data we want, our table keeps track of the order and frequency of each data type we send
         uint16_t id = frSkyDataIdTable[smartPortIdCnt];
-        if (id == 0) {
+        if (id == 0) { // end of table reached, loop back
             smartPortIdCnt = 0;
             id = frSkyDataIdTable[smartPortIdCnt];
         }
@@ -269,7 +276,7 @@ void handleSmartPortTelemetry(void)
                 smartPortHasRequest = 0;
                 break;
             case FSSP_DATAID_ACCZ       :
-                smartPortSendPackage(id, accSmooth[Y]);
+                smartPortSendPackage(id, accSmooth[Z]);
                 smartPortHasRequest = 0;
                 break;
             case FSSP_DATAID_T1         :
@@ -286,7 +293,7 @@ void handleSmartPortTelemetry(void)
 
                 if (f.OK_TO_ARM)
                     tmpi += 1;
-                else if (f.ARMED)
+                if (f.ARMED)
                     tmpi += 2;
 
                 if (f.ANGLE_MODE)
