@@ -241,6 +241,7 @@ static void resetConf(void)
     mcfg.servo_pwm_rate = 50;
     // gps/nav stuff
     mcfg.gps_type = GPS_NMEA;
+    mcfg.gps_port = GPS_PORT_UART_2;
     mcfg.gps_baudrate = GPS_BAUD_115200;
     // serial (USART1) baudrate
     mcfg.serial_baudrate = 115200;

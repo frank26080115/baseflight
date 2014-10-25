@@ -292,6 +292,7 @@ typedef struct master_t {
 
     // gps-related stuff
     uint8_t gps_type;                       // See GPSHardware enum.
+    uint8_t gps_port;                       // See GPSPort enum
     int8_t gps_baudrate;                    // See GPSBaudRates enum.
     uint8_t gps_ubx_sbas;                   // UBX SBAS setting. 0 = AUTO, 1 = EGNOS, 2 = WAAS, 3 = MSAS, 4 = GAGAN (default = 0 = AUTO)
 
