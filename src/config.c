@@ -220,7 +220,7 @@ static void resetConf(void)
     mcfg.serialrx_type = 0;
     mcfg.sbus_offset = 988;
     mcfg.telemetry_provider = TELEMETRY_PROVIDER_FRSKY;
-    mcfg.telemetry_port = TELEMETRY_PORT_UART;
+    mcfg.telemetry_port = TELEMETRY_PORT_UART_1;
     mcfg.telemetry_switch = 0;
     mcfg.midrc = 1500;
     mcfg.mincheck = 1100;

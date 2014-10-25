@@ -31,7 +31,7 @@ bool canUseTelemetryWithCurrentConfiguration(void)
     }
 
     if (isTelemetryProviderHoTT()) {
-        if (mcfg.telemetry_port == TELEMETRY_PORT_UART) {
+        if (mcfg.telemetry_port == TELEMETRY_PORT_UART_1) {
             // HoTT requires a serial port that supports RX/TX mode swapping
             return false;
         }

@@ -245,14 +245,14 @@ static void sendHeading(void)
 
 void freeFrSkyTelemetryPort(void)
 {
-    if (mcfg.telemetry_port == TELEMETRY_PORT_UART) {
+    if (mcfg.telemetry_port == TELEMETRY_PORT_UART_1) {
         serialInit(mcfg.serial_baudrate);
     }
 }
 
 void configureFrSkyTelemetryPort(void)
 {
-    if (mcfg.telemetry_port == TELEMETRY_PORT_UART) {
+    if (mcfg.telemetry_port == TELEMETRY_PORT_UART_1) {
         serialInit(9600);
     }
 }
