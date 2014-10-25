@@ -118,6 +118,8 @@ static uint8_t numberBoxItems = 0;
 extern int16_t motor_disarmed[MAX_MOTORS];
 // cause reboot after MSP processing complete
 static bool pendReboot = false;
+// from telemetry_smartport
+extern char smartPortHasTimedOut;
 
 static const char pidnames[] =
     "ROLL;"
@@ -266,12 +268,20 @@ void serialInit(uint32_t baudrate)
     int idx;
 
     numTelemetryPorts = 0;
-    core.mainport = uartOpen(USART1, NULL, baudrate, MODE_RXTX);
-    ports[0].port = core.mainport;
-    numTelemetryPorts++;
+
+    // we prevent the mainport from starting, if SmartPort is connected
+    // because the standard serial port config will put the TX pin in push-pull mode
+    // this will cause the receiver to stop providing telemetry request tokens
+    // so we disable mainport, and re-enable it after a timeout if SmartPort is disconnected (no requests)
+    if (!feature(FEATURE_TELEMETRY) || mcfg.telemetry_port != TELEMETRY_PORT_UART_1 || mcfg.telemetry_provider != TELEMETRY_PROVIDER_SMARTPORT || smartPortHasTimedOut) {
+        core.mainport = uartOpen(USART1, NULL, baudrate, MODE_RXTX);
+        ports[numTelemetryPorts].port = core.mainport;
+        numTelemetryPorts++;
+    }
+
     if (hw_revision >= NAZE32_SP) {
         core.flexport = uartOpen(USART3, NULL, baudrate, MODE_RXTX);
-        ports[1].port = core.flexport;
+        ports[numTelemetryPorts].port = core.flexport;
         numTelemetryPorts++;
     }
 
