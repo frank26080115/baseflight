@@ -71,6 +71,7 @@ HIGHEND_SRC	 = gps.c \
 		   drv_softserial.c \
 		   telemetry_common.c \
 		   telemetry_frsky.c \
+		   telemetry_smartport.c \
 		   telemetry_hott.c
 
 # Source files for the NAZE target

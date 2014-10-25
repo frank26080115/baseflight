@@ -3,6 +3,7 @@
 
 #include "telemetry_frsky.h"
 #include "telemetry_hott.h"
+#include "telemetry_smartport.h"
 
 static bool isTelemetryConfigurationValid = false; // flag used to avoid repeated configuration checks
 
@@ -16,15 +17,19 @@ bool isTelemetryProviderHoTT(void)
     return mcfg.telemetry_provider == TELEMETRY_PROVIDER_HOTT;
 }
 
+bool isTelemetryProviderSmartPort(void)
+{
+    return mcfg.telemetry_provider == TELEMETRY_PROVIDER_SMARTPORT;
+}
+
 bool canUseTelemetryWithCurrentConfiguration(void)
 {
-
     if (!feature(FEATURE_TELEMETRY)) {
         return false;
     }
 
     if (!feature(FEATURE_SOFTSERIAL)) {
-        if (mcfg.telemetry_port == TELEMETRY_PORT_SOFTSERIAL_1 || mcfg.telemetry_port == TELEMETRY_PORT_SOFTSERIAL_2) {
+        if (mcfg.telemetry_provider != TELEMETRY_PROVIDER_SMARTPORT && (mcfg.telemetry_port == TELEMETRY_PORT_SOFTSERIAL_1 || mcfg.telemetry_port == TELEMETRY_PORT_SOFTSERIAL_2)) {
             // softserial feature must be enabled to use telemetry on softserial ports
             return false;
         }
@@ -42,10 +47,6 @@ bool canUseTelemetryWithCurrentConfiguration(void)
 
 void initTelemetry(void)
 {
-    // Force telemetry to uart when softserial disabled
-    if (!feature(FEATURE_SOFTSERIAL))
-        mcfg.telemetry_port = TELEMETRY_PORT_UART_1;
-
     isTelemetryConfigurationValid = canUseTelemetryWithCurrentConfiguration();
 
     if (mcfg.telemetry_port == TELEMETRY_PORT_SOFTSERIAL_1)
@@ -65,10 +66,17 @@ bool determineNewTelemetryEnabledState(void)
     bool enabled = true;
 
     if (mcfg.telemetry_port == TELEMETRY_PORT_UART_1) {
+        if (mcfg.telemetry_provider == TELEMETRY_PROVIDER_SMARTPORT) {
+            if (smartPortHasTimedOut) {
+                enabled = false;
+            }
+        }
+        else {
         if (!mcfg.telemetry_switch)
             enabled = f.ARMED;
         else
             enabled = rcOptions[BOXTELEMETRY];
+    }
     }
 
     return enabled;
@@ -88,6 +96,10 @@ static void configureTelemetryPort(void)
     if (isTelemetryProviderHoTT()) {
         configureHoTTTelemetryPort();
     }
+
+    if (isTelemetryProviderSmartPort()) {
+        configureSmartPortTelemetryPort();
+    }
 }
 
 void freeTelemetryPort(void)
@@ -98,6 +110,10 @@ void freeTelemetryPort(void)
 
     if (isTelemetryProviderHoTT()) {
         freeHoTTTelemetryPort();
+    }
+
+    if (isTelemetryProviderSmartPort()) {
+        freeSmartPortTelemetryPort();
     }
 }
 
@@ -132,5 +148,9 @@ void handleTelemetry(void)
 
     if (isTelemetryProviderHoTT()) {
         handleHoTTTelemetry();
+    }
+
+    if (isTelemetryProviderSmartPort()) {
+        handleSmartPortTelemetry();
     }
 }

@@ -128,7 +128,12 @@ int main(void)
     imuInit(); // Mag is initialized inside imuInit
     mixerInit(); // this will set core.useServo var depending on mixer type
 
-    serialInit(mcfg.serial_baudrate);
+    // we prevent the mainport from starting, if SmartPort is connected
+    // because the standard serial port config will put the TX pin in push-pull mode
+    // this will cause the receiver to stop providing telemetry request tokens
+    // so we disable mainport, and re-enable it after a timeout if SmartPort is disconnected (no requests)
+    if (!feature(FEATURE_TELEMETRY) || mcfg.telemetry_port != TELEMETRY_PORT_UART_1 || mcfg.telemetry_provider != TELEMETRY_PROVIDER_SMARTPORT)
+        serialInit(mcfg.serial_baudrate);
 
     // when using airplane/wing mixer, servo/motor outputs are remapped
     if (mcfg.mixerConfiguration == MULTITYPE_AIRPLANE || mcfg.mixerConfiguration == MULTITYPE_FLYING_WING)
