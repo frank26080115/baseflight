@@ -44,7 +44,7 @@ void initTelemetry(void)
 {
     // Force telemetry to uart when softserial disabled
     if (!feature(FEATURE_SOFTSERIAL))
-        mcfg.telemetry_port = TELEMETRY_PORT_UART;
+        mcfg.telemetry_port = TELEMETRY_PORT_UART_1;
 
     isTelemetryConfigurationValid = canUseTelemetryWithCurrentConfiguration();
 
@@ -64,7 +64,7 @@ bool determineNewTelemetryEnabledState(void)
 {
     bool enabled = true;
 
-    if (mcfg.telemetry_port == TELEMETRY_PORT_UART) {
+    if (mcfg.telemetry_port == TELEMETRY_PORT_UART_1) {
         if (!mcfg.telemetry_switch)
             enabled = f.ARMED;
         else

@@ -41,6 +41,9 @@ uartPort_t *serialUSART1(uint32_t baudRate, portMode_t mode)
     gpio.mode = Mode_AF_PP;
     if (mode & MODE_TX)
         gpioInit(GPIOA, &gpio);
+    gpio.mode = Mode_AF_OD;
+    if (mode & MODE_BIDIR)
+        gpioInit(GPIOA, &gpio);
     gpio.pin = Pin_10;
     gpio.mode = Mode_IPU;
     if (mode & MODE_RX)
@@ -84,6 +87,9 @@ uartPort_t *serialUSART2(uint32_t baudRate, portMode_t mode)
     gpio.pin = Pin_2;
     gpio.mode = Mode_AF_PP;
     if (mode & MODE_TX)
+        gpioInit(GPIOA, &gpio);
+    gpio.mode = Mode_AF_OD;
+    if (mode & MODE_BIDIR)
         gpioInit(GPIOA, &gpio);
     gpio.pin = Pin_3;
     gpio.mode = Mode_IPU;
@@ -129,6 +135,9 @@ uartPort_t *serialUSART3(uint32_t baudRate, portMode_t mode)
     gpio.pin = Pin_10;
     gpio.mode = Mode_AF_PP;
     if (mode & MODE_TX)
+        gpioInit(GPIOB, &gpio);
+    gpio.mode = Mode_AF_OD;
+    if (mode & MODE_BIDIR)
         gpioInit(GPIOB, &gpio);
     gpio.pin = Pin_11;
     gpio.mode = Mode_IPU;
@@ -187,8 +196,14 @@ serialPort_t *uartOpen(USART_TypeDef *USARTx, serialReceiveCallbackPtr callback,
         USART_InitStructure.USART_Mode |= USART_Mode_Rx;
     if (mode & MODE_TX)
         USART_InitStructure.USART_Mode |= USART_Mode_Tx;
+    if (mode & MODE_BIDIR)
+        USART_InitStructure.USART_Mode |= USART_Mode_Tx | USART_Mode_Rx;
     USART_Init(USARTx, &USART_InitStructure);
     USART_Cmd(USARTx, ENABLE);
+    if (mode & MODE_BIDIR)
+        USART_HalfDuplexCmd(USARTx, ENABLE);
+    else
+        USART_HalfDuplexCmd(USARTx, DISABLE);
 
     DMA_StructInit(&DMA_InitStructure);
     DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&USARTx->DR;
@@ -200,7 +215,7 @@ serialPort_t *uartOpen(USART_TypeDef *USARTx, serialReceiveCallbackPtr callback,
     DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
 
     // Receive DMA or IRQ
-    if (mode & MODE_RX) {
+    if ((mode & MODE_RX) || (mode & MODE_BIDIR)) {
         if (s->rxDMAChannel) {
             DMA_InitStructure.DMA_BufferSize = s->port.rxBufferSize;
             DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
@@ -217,7 +232,7 @@ serialPort_t *uartOpen(USART_TypeDef *USARTx, serialReceiveCallbackPtr callback,
     }
 
     // Transmit DMA or IRQ
-    if (mode & MODE_TX) {
+    if ((mode & MODE_TX) || (mode & MODE_BIDIR)) {
         if (s->txDMAChannel) {
             DMA_InitStructure.DMA_BufferSize = s->port.txBufferSize;
             DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;
