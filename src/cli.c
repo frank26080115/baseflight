@@ -1038,7 +1038,7 @@ static void cliStatus(char *cmdline)
 static void cliVersion(char *cmdline)
 {
     (void)cmdline;
-    cliPrint("Afro32 CLI version 2.3 " __DATE__ " / " __TIME__);
+    cliPrint("Afro32 CLI version 2.3 " __DATE__ " / " __TIME__ ", forked by frank26080115");
 }
 
 void cliProcess(void)
