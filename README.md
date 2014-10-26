@@ -10,10 +10,10 @@ This fork has some changes that are described in detail at https://github.com/fr
 binaries
 ========
 
-The newest builds can be obtained here: http://leela.fiendie.net/baseflight
+The newest builds of this fork are listed in the wiki https://github.com/frank26080115/baseflight/wiki/
 
 Note that these images aren't necessarily flight-tested so use them at your own risk.
-When in doubt use the image from the obj-folder.
+When in doubt use the image from the obj-folder with the most recent date.
 
 license
 =======
