@@ -215,7 +215,8 @@ void handleSmartPortTelemetry(void)
                 }
                 break;
             case FSSP_DATAID_VFAS       :
-                smartPortSendPackage(id, vbat); // given in 0.1V, unknown requested unit
+                smartPortSendPackage(id, vbat * 83); // supposedly given in 0.1V, unknown requested unit
+                // multiplying by 83 seems to make Taranis read correctly
                 smartPortHasRequest = 0;
                 break;
             case FSSP_DATAID_CURRENT    :
@@ -268,15 +269,18 @@ void handleSmartPortTelemetry(void)
                 smartPortHasRequest = 0;
                 break;
             case FSSP_DATAID_ACCX       :
-                smartPortSendPackage(id, accSmooth[X]); // unknown input and unknown output unit, may be requesting a delta value
+                smartPortSendPackage(id, accSmooth[X] / 44);
+                // unknown input and unknown output unit
+                // we can only show 00.00 format, another digit won't display right on Taranis
+                // dividing by roughly 44 will give acceleration in G units
                 smartPortHasRequest = 0;
                 break;
             case FSSP_DATAID_ACCY       :
-                smartPortSendPackage(id, accSmooth[Y]);
+                smartPortSendPackage(id, accSmooth[Y] / 44);
                 smartPortHasRequest = 0;
                 break;
             case FSSP_DATAID_ACCZ       :
-                smartPortSendPackage(id, accSmooth[Z]);
+                smartPortSendPackage(id, accSmooth[Z] / 44);
                 smartPortHasRequest = 0;
                 break;
             case FSSP_DATAID_T1         :
