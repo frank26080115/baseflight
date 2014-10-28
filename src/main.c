@@ -190,6 +190,7 @@ int main(void)
         }
     }
 #ifndef CJMCU
+    // Optional GPS - available in both PPM, PWM and serialRX input mode, in PWM input, reduces number of available channels by 2.
     // gpsInit will return if FEATURE_GPS is not enabled.
     gpsInit(mcfg.gps_baudrate);
 #endif
