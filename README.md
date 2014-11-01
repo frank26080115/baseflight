@@ -10,10 +10,13 @@ This fork has some changes that are described in detail at https://github.com/fr
 binaries
 ========
 
-The newest builds of this fork are listed in the wiki https://github.com/frank26080115/baseflight/wiki/
+The latest builds can be obtained here: http://firmware.baseflight.net
+
+Information about the builds is provided at http://dev.baseflight.net:8080/job/baseflight
 
 Note that these images aren't necessarily flight-tested so use them at your own risk.
-When in doubt use the image from the obj-folder with the most recent date.
+Stable releases have a corresponding commit tagged "release_YYYY_MM_DD".
+When in doubt use baseflight-configurator to flash the latest stable firmware release.
 
 license
 =======
