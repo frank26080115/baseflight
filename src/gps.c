@@ -132,8 +132,6 @@ void gpsInit(uint8_t baudrateIndex)
     gpsSetState(GPS_UNKNOWN);
     if (!feature(FEATURE_GPS))
         return;
-    if (feature(FEATURE_SERIALRX) && !feature(FEATURE_SOFTSERIAL))
-        return;
 
     gpsData.baudrateIndex = baudrateIndex;
     gpsData.lastMessage = millis();
