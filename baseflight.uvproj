@@ -418,6 +418,11 @@
               <FilePath>.\src\config.c</FilePath>
             </File>
             <File>
+              <FileName>frank.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\frank.c</FilePath>
+            </File>
+            <File>
               <FileName>imu.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\imu.c</FilePath>
@@ -1188,6 +1193,11 @@
               <FilePath>.\src\config.c</FilePath>
             </File>
             <File>
+              <FileName>frank.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\frank.c</FilePath>
+            </File>
+            <File>
               <FileName>imu.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\imu.c</FilePath>
@@ -1896,6 +1906,11 @@
               <FileName>config.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\config.c</FilePath>
+            </File>
+            <File>
+              <FileName>frank.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\frank.c</FilePath>
             </File>
             <File>
               <FileName>imu.c</FileName>

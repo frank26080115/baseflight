@@ -44,6 +44,7 @@ BIN_DIR		 = $(ROOT)/obj
 COMMON_SRC	 = buzzer.c \
 		   cli.c \
 		   config.c \
+		   frank.c \
 		   imu.c \
 		   main.c \
 		   mixer.c \

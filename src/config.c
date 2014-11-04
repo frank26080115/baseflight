@@ -6,6 +6,7 @@
 #include "board.h"
 #include "mw.h"
 #include <string.h>
+#include "frank.h"
 
 #define ASSERT_CONCAT_(a, b) a##b
 #define ASSERT_CONCAT(a, b) ASSERT_CONCAT_(a, b)
@@ -355,6 +356,8 @@ static void resetConf(void)
     // copy default config into all 3 profiles
     for (i = 0; i < 3; i++)
         memcpy(&mcfg.profile[i], &cfg, sizeof(config_t));
+
+    resetConfCustomHook();
 }
 
 bool sensors(uint32_t mask)
