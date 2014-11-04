@@ -15,9 +15,8 @@ void resetConfForFrank(void)
     mcfg.serialrx_type = 2;
     mcfg.sbus_offset = 1004;
     mcfg.telemetry_provider = TELEMETRY_PROVIDER_SMARTPORT;
-    mcfg.gps_port = GPS_PORT_SOFTSERIAL_1;
     mcfg.gps_baudrate = GPS_BAUD_19200;
-    mcfg.gps_type = 1;
+    mcfg.gps_type = GPS_UBLOX;
     mcfg.softserial_baudrate = 19200;
 
     cfg.activate[BOXARM]     = (1 << 0) << (3 * 0);

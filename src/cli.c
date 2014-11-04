@@ -152,7 +152,6 @@ const clivalue_t valueTable[] = {
     { "softserial_1_inverted", VAR_UINT8, &mcfg.softserial_1_inverted, 0, 1 },
     { "softserial_2_inverted", VAR_UINT8, &mcfg.softserial_2_inverted, 0, 1 },
     { "gps_type", VAR_UINT8, &mcfg.gps_type, 0, GPS_HARDWARE_MAX },
-    { "gps_port", VAR_UINT8, &mcfg.gps_port, 0, GPS_PORT_MAX },
     { "gps_baudrate", VAR_INT8, &mcfg.gps_baudrate, 0, GPS_BAUD_MAX },
     { "gps_ubx_sbas", VAR_UINT8, &mcfg.gps_ubx_sbas, 0, 4 },
     { "serialrx_type", VAR_UINT8, &mcfg.serialrx_type, 0, SERIALRX_PROVIDER_MAX },
