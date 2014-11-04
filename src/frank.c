@@ -18,7 +18,7 @@ void resetConfForFrank(void)
     mcfg.gps_port = GPS_PORT_SOFTSERIAL_1;
     mcfg.gps_baudrate = GPS_BAUD_19200;
     mcfg.gps_type = 1;
-    mcfg.softserial_1_baudrate = 19200;
+    mcfg.softserial_baudrate = 19200;
 
     cfg.activate[BOXARM]     = (1 << 0) << (3 * 0);
     cfg.activate[BOXANGLE]   = (1 << 0) << (3 * 2);
